@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Register</title>
+<!-- 	<link rel="stylesheet" href="/certificapp2/src/main/resources/css/index_st.css"> -->
+</head>
+
+<body>
+
+	<div class="container">
+		<img src="user.png" class="avatar" alt="avatar">
+		<h1>REGISTER</h1>
+
+		<form action="#" th:action="@{/certificapp/register}"
+			th:object="${user}" method="post">
+			<!-- 		<form action="#" th:action="@{/certificapp/register}" th:object="${user}" method="post" enctype="utf8"> -->
+			<div>
+				<label for="userName" th:text="#{label.user.userName}">Nombre
+					de Usuario</label> <input type="text" name="userName" id="userName"
+					th:field="*{userName}" placeholder="Nombre de usuario" />
+				<!-- <p th:errors="*{usuario}" class="text-danger" th:if="${#fields.hasErrors('usuario')}">error</p>-->
+				<p th:each="error:~{#fields.errors('userName')}" class="text-danger"
+					th:text="${error}">Username Validation error</p>
+			</div>
+			<div>
+				<label for="password" th:text="#{label.user.password}">Password
+				</label> <input type="text" name="password" id="password"
+					th:field="*{password}" placeholder="Password" />
+				<!-- <p th:errors="*{usuario}" class="text-danger" th:if="${#fields.hasErrors('usuario')}">error</p>-->
+				<p th:each="error:~{#fields.errors('password')}" class="text-danger"
+					th:text="${error}">Password Validation error</p>
+			
+			
+				<p th:if="${param.success}" th:text="${param.success}"
+					class="message" />
+			</div>
+			<div>
+				<button type="submit">Register</button>
+				<a th:href="@{/certificapp/login}" th:text="login">Login</a>
+			</div>
+		</form>
+		<form action="#" th:action="@{/certificapp/login}" method="get">
+			<input type="submit" value="Login" />
+		</form>
+	</div>
+
+</body>
+
+</html>
