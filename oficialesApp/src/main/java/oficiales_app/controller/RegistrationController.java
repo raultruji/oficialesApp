@@ -24,14 +24,14 @@ public class RegistrationController {
 	@Autowired IUserService userService;
 	
 	
-	@GetMapping("/certificapp/registration")
+	@GetMapping("/oficialesapp/registration")
 	public String showRegistrationForm(WebRequest request, Model model) {
 		UserDto userDto = new UserDto();
 		model.addAttribute("user", userDto);
 		return "registration";
 	}
 	
-	@PostMapping("/certificapp/registration")
+	@PostMapping("/oficialesapp/registration")
 	public ModelAndView registerUserAccount(
 			@ModelAttribute("user") @Valid UserDto userDto, 
 			HttpServletRequest request,

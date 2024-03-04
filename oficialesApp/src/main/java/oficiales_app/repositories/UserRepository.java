@@ -10,6 +10,6 @@ import oficiales_app.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 
-	Optional<User> findByUserName(String email);
+	Optional<User> findByUserName(String userName);
 
 }

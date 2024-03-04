@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import oficiales_app.entities.Privilege;
 import oficiales_app.entities.Role;
 import oficiales_app.entities.User;
 import oficiales_app.repositories.UserRepository;
@@ -30,6 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		System.out.println("using details service loadByUserName!");
 		Optional<User> user = userRepo.findByUserName(username);
+		return (UserDetails) userRepo.findByUserName(username).orElseThrow(()-> new UsernameNotFoundException("user not found"));
+		/*
 		if (user == null)
 			throw new UsernameNotFoundException("No users with username " + username);
 		boolean enabled = true;
@@ -43,6 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				credentialsNonExpired,
 				accountNonLocked, 
 				getAuthorities(user.get().getRoles()));
+				*/
 	}
 	private static List<GrantedAuthority> getAuthorities (Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();

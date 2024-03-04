@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ public class UserService implements IUserService {
 	private RoleRepository roleRepository;
 	@Autowired
 	private PasswordEncoder encoder;
+	@Autowired
+	private UserDetailsService detailsService;
 
 	@Override
 	public User registerNewUser(UserDto userDto)throws UserAlreadyExistsException {

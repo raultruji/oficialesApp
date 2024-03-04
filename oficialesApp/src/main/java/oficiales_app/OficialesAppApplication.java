@@ -20,6 +20,7 @@ public class OficialesAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OficialesAppApplication.class, args);
 	}
+	
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepo, UserRepository userRepo, PasswordEncoder encoder) {
 		return args -> {
