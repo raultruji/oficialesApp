@@ -3,6 +3,7 @@ package oficiales_app.security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepo.findByUserName(username);
+		System.out.println("using details service loadByUserName!");
+		Optional<User> user = userRepo.findByUserName(username);
 		if (user == null)
 			throw new UsernameNotFoundException("No users with username " + username);
 		boolean enabled = true;
@@ -35,12 +37,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 		return new org.springframework.security.core.userdetails.User(
-				user.getUserName(),
-				user.getPassword(), 
+				user.get().getUserName(),
+				user.get().getPassword(), 
 				enabled, accountNonExpired,
 				credentialsNonExpired,
 				accountNonLocked, 
-				getAuthorities(user.getRoles()));
+				getAuthorities(user.get().getRoles()));
 	}
 	private static List<GrantedAuthority> getAuthorities (Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();

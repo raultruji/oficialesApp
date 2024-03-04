@@ -1,10 +1,8 @@
 package oficiales_app.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,20 +13,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-@RequiredArgsConstructor
+
+
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Data
 @Entity
+@Table(name="users")
 public class User implements Serializable{
+
+	private static final long serialVersionUID = 2396516171661274411L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_user")
+	@Column(name = "user_id")
 	private Long id;
 	
 	@Column
@@ -42,10 +46,15 @@ public class User implements Serializable{
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    @JoinTable(	name = "users_role_junction",
+    			joinColumns = {@JoinColumn(name = "user_id")},
+    			inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> roles;
 	
 	
+	
+	public CustomUserDetails toCustomUserDetails() {
+		return new CustomUserDetails(userName,password,this.getRoles());
+	}
 }

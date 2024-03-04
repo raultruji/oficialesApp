@@ -10,17 +10,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
+@Table(name="identificaciones")
 @AllArgsConstructor
 @Data
 public class Identificacion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_factura")
+	@Column(name = "factura_id")
 	private Long id;
 	
 	@Column

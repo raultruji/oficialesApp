@@ -1,11 +1,15 @@
 package oficiales_app.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import oficiales_app.entities.User;
 
+@Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 
-	User findByUserName(String email);
+	Optional<User> findByUserName(String email);
 
 }

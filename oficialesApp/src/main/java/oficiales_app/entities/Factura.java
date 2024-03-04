@@ -5,17 +5,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
+@Table(name="facturas")
 @AllArgsConstructor
 @Data
 public class Factura {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id_factura")
+	@Column(name="factura_id")
 	private Long id;
 	
 	@Column(columnDefinition = "varchar(50)")

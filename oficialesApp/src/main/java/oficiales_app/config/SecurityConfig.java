@@ -1,18 +1,22 @@
 package oficiales_app.config;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,7 +25,6 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import lombok.RequiredArgsConstructor;
 import oficiales_app.entities.Permission;
-import oficiales_app.entities.Role;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -41,6 +44,7 @@ public class SecurityConfig {
 					//TODO arreglar para acceder a editar/get listas de medics, totales, etc
 					//url permitidas
 					//acceso  a users solo con rol ADMIN o ADMIN + USER
+					
 					auth.requestMatchers(POST,"/oficialesapp/users/**")
 					.hasAuthority(Permission.ADMIN_CREATE.name());
 					auth.requestMatchers(DELETE,"/oficialesapp/users/**")
@@ -50,7 +54,8 @@ public class SecurityConfig {
 					auth.requestMatchers(GET,"/oficialesapp/users/**")
 					.hasAnyAuthority(Permission.ADMIN_READ.name(),Permission.USER_READ.name());
 					auth.requestMatchers("/oficialesapp/mainmenu/**")
-					.hasAnyRole(Role.ADMIN.name(),Role.USER.name());
+					.authenticated();
+					//.hasAnyRole(Role.getName(),Role.USER.name());
 					//resto
 					auth.requestMatchers("/oficialesapp/**").permitAll();
 					auth.anyRequest().authenticated();
@@ -98,7 +103,13 @@ public class SecurityConfig {
 		});
 
 	}
-	
+	//AuthenticationManager < ProviderManager < AuthenticationProvider
+	@Bean
+	public AuthenticationManager authManager(UserDetailsService detailsService) {
+		DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+		daoProvider.setUserDetailsService(detailsService);
+		return new ProviderManager(daoProvider);
+	}
 	
 	@Bean
 	public SessionRegistry sessionRegistry() {
