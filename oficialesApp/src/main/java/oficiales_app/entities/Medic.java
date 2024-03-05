@@ -30,4 +30,6 @@ public class Medic {
 	private Integer numCol;
 	@Column
 	private String especialidad;
+	
+	
 }

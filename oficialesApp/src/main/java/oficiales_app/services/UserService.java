@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import oficiales_app.dtos.UserDto;
+import oficiales_app.dtos.UserLoginDto;
 import oficiales_app.entities.User;
 import oficiales_app.repositories.RoleRepository;
 import oficiales_app.repositories.UserRepository;
@@ -25,7 +25,7 @@ public class UserService implements IUserService {
 	private PasswordEncoder encoder;
 
 	@Override
-	public User registerNewUser(UserDto userDto)throws UserAlreadyExistsException {
+	public User registerNewUser(UserLoginDto userDto)throws UserAlreadyExistsException {
 		if(userNameExists(userDto.getUserName()))
 			throw new UserAlreadyExistsException("Ya existe la cuenta para "+userDto.getUserName());
 		final User user = new User();

@@ -1,17 +1,18 @@
 package oficiales_app.dtos;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import java.util.Set;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import oficiales_app.validations.PasswordMatches;
+import lombok.RequiredArgsConstructor;
+import oficiales_app.entities.Role;
+
 @Data
-@PasswordMatches
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDto {
-	@NotNull
-	@NotEmpty
+
 	private String userName;
-	@NotNull
-	@NotEmpty
 	private String password;
-	private String matchingPassword;
+	private Set<Role> roles;
 }

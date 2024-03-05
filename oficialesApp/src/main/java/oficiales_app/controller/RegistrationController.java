@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import oficiales_app.dtos.UserDto;
+import oficiales_app.dtos.UserLoginDto;
 import oficiales_app.entities.User;
 import oficiales_app.services.IUserService;
 import oficiales_app.validations.exceptions.UserAlreadyExistsException;
@@ -26,14 +26,14 @@ public class RegistrationController {
 	
 	@GetMapping("/certificapp/registration")
 	public String showRegistrationForm(WebRequest request, Model model) {
-		UserDto userDto = new UserDto();
+		UserLoginDto userDto = new UserLoginDto();
 		model.addAttribute("user", userDto);
 		return "registration";
 	}
 	
 	@PostMapping("/certificapp/registration")
 	public ModelAndView registerUserAccount(
-			@ModelAttribute("user") @Valid UserDto userDto, 
+			@ModelAttribute("user") @Valid UserLoginDto userDto, 
 			HttpServletRequest request,
 			Errors errors) {
 		try {

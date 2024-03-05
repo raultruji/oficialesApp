@@ -17,30 +17,42 @@ import oficiales_app.entities.Privilege;
 import oficiales_app.entities.Role;
 import oficiales_app.entities.User;
 import oficiales_app.repositories.UserRepository;
-
+/**
+ * core component used for loading user-specific data. 
+ * It is responsible for retrieving user information from a 
+ * backend data source, such as a database or an external service, 
+ * and returning an instance of the UserDetails interface
+ */
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepo;
-
+	/**
+	 * takes a username as a parameter and returns a 
+	 * fully populated UserDetails object, which represents
+	 * an authenticated 
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepo.findByUserName(username);
 		if (user == null)
 			throw new UsernameNotFoundException("No users with username " + username);
-		boolean enabled = true;
-		boolean accountNonExpired = true;
-		boolean credentialsNonExpired = true;
-		boolean accountNonLocked = true;
-		return new org.springframework.security.core.userdetails.User(
-				user.getUserName(),
-				user.getPassword(), 
-				enabled, accountNonExpired,
-				credentialsNonExpired,
-				accountNonLocked, 
-				getAuthorities(user.getRoles()));
+		return  new SecurityUser(user);
+		
+		
+//		boolean enabled = true;
+//		boolean accountNonExpired = true;
+//		boolean credentialsNonExpired = true;
+//		boolean accountNonLocked = true;
+//		return new org.springframework.security.core.userdetails.User(
+//				user.getUsername(),
+//				user.getPassword(), 
+//				enabled, accountNonExpired,
+//				credentialsNonExpired,
+//				accountNonLocked, 
+//				getAuthorities(user.getRoles()));
 	}
 	private static List<GrantedAuthority> getAuthorities (Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();

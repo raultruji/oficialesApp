@@ -2,7 +2,7 @@ package oficiales_app.validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import oficiales_app.dtos.UserDto;
+import oficiales_app.dtos.UserLoginDto;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches,Object>{
 
@@ -12,7 +12,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 	}
 	@Override
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
-		UserDto user = (UserDto) value;
+		UserLoginDto user = (UserLoginDto) value;
 		return user.getPassword().equals(user.getMatchingPassword());
 	}
 
